@@ -8,7 +8,7 @@ A forma recomendada de instalação é por [composer](https://getcomposer.org/):
 ```
     {
         "require": {
-            "pandora-una/pandora-valida-dependencia": "dev-aceita_multiplas_associacoes"
+            "pandora-una/pandora-valida-dependencia": "dev-master"
         }
     }
 ```
