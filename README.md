@@ -160,3 +160,30 @@ Exemplo de uso de *caso_contrario*
         ),
     ));
 ```
+
+No caso do campo *da_associação*, também é possível declarar campos aninhados, como no exemplo a seguir
+
+```php
+    $this->add(array(
+        'name' => 'evento',
+        'required' => true,
+    ));
+    $this->add(array(
+        'name' => 'numeroCheque',
+        'required' => false,
+        'continue_if_empty' => true,
+        'filters' => array(),
+        'validators' => array(
+            array(
+                'name' => 'Dependencia',
+                'options' => array(
+                    'se_campo' => 'exigeCheque',
+                    'da_associacao' => 'formaPagamento.tipoPagamento',
+                    'tem_valor' => 'true',
+                    'este_campo' => Dependencia::EH_OBRIGATORIO,
+                    'entidade' => 'Application\Entity\Convidado',
+                ),
+            ),
+        ),
+    ));
+```
