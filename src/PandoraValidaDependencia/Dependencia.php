@@ -49,7 +49,6 @@ class Dependencia extends AbstractValidator implements ServiceLocatorAwareInterf
         $regra               = $this->getOption('este_campo');
 
         $valorContexto = $this->extraiValor($this->campoContexo, $contexto);
-
         if ($this->valorEsperado == $valorContexto) {
             $this->resultadoComparacao = 'é igual a';
 
@@ -78,7 +77,10 @@ class Dependencia extends AbstractValidator implements ServiceLocatorAwareInterf
             $associacoes = explode('.', $this->getOption('da_associacao'));
             $entidade    = $this->getOption('entidade');
 
-            if (isset($contexto[$associacoes[0]])) {
+            if (array_key_exists($associacoes[0], $contexto)) {
+                if ($contexto[$associacoes[0]] === null) {
+                    return;
+                }
                 $entityAssociacao = $this->getAssociacao($entidade, $associacoes, $contexto);
             } else {
                 $entityAssociacao = $this->encontraEntidade($entidade, $contexto);
