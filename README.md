@@ -161,7 +161,7 @@ Exemplo de uso de *caso_contrario*
     ));
 ```
 
-No caso do campo *da_associação*, também é possível declarar campos aninhados, como no exemplo a seguir
+No caso do campo *da_associação*, também é possível declarar campos aninhados, como no exemplo a seguir:
 
 ```php
     $this->add(array(
