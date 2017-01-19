@@ -165,7 +165,7 @@ No caso do campo *da_associação*, também é possível declarar campos aninhad
 
 ```php
     $this->add(array(
-        'name' => 'evento',
+        'name' => 'formaPagamento',
         'required' => true,
     ));
     $this->add(array(
