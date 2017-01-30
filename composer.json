@@ -17,8 +17,8 @@
   ],
   "require": {
     "php": ">=5.3.3",
-    "zendframework/zend-validator": "~2.5.0",
-    "zendframework/zend-servicemanager": "~2.5.0",
+    "zendframework/zend-validator": "<2.6.0",
+    "zendframework/zend-servicemanager": "<2.6.0",
     "doctrine/doctrine-orm-module" : "0.*",
     "doctrine/doctrine-module" : "~1.0"
   },
