@@ -78,17 +78,14 @@ Um exemplo para uma regra que se aplica a dois valores do mesmo campo seria:
                 'name' => 'Dependencia',
                 'options' => array(
                     'se_campo' => 'status',
-                    'tem_valor' => array('incluido', 'em_orcamento'),
+                    'tem_valor' => array('aprovada', 'nao_aprovada'),
                     'este_campo' => Dependencia::EH_OBRIGATORIO,
-                    'entidade' => 'Application\Entity\Pessoa',
+                    'entidade' => 'Application\Entity\Despesa',
                 ),
             ),
         ),
     ));
 ```
-
-
-
 
 #### Regras
 
