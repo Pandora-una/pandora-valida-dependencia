@@ -49,7 +49,7 @@ class Dependencia extends AbstractValidator implements ServiceLocatorAwareInterf
         $regra               = $this->getOption('este_campo');
 
         $valorContexto = $this->extraiValor($this->campoContexo, $contexto);
-        if ($this->valorEsperado == $valorContexto) {
+        if ($this->comparaValores($this->valorEsperado, $valorContexto)) {
             $this->resultadoComparacao = 'é igual a';
 
             return $this->aplicaRegra($valor, $regra, $contexto);
@@ -61,6 +61,123 @@ class Dependencia extends AbstractValidator implements ServiceLocatorAwareInterf
         }
 
         return true;
+    }
+
+    /**
+     * Decide se o valor é valido de acordo com a regra informada.
+     *
+     * @param      mixed   $valor     O valor do campo sendo validado
+     * @param      string  $regra     A regra para validar
+     * @param      array   $contexto  The contexto
+     * @param      bool  $negativa  true quando a regra é negativa
+     *
+     * @return     bool    true se for válido, false se não for
+     */
+    protected function aplicaRegra($valor, $regra, array $contexto)
+    {
+        return $this->{$regra}($valor, $contexto);
+    }
+
+    /**
+     * Compara o valor do contexto com os valores separados
+     *
+     * @param      array|mixed  $valoresEsperados  Os valores esperados pela
+     *                                             regra
+     * @param      mixed        $valorContexto     O valor no contexto
+     *
+     * @return     boolean      true se algum dos valores esperados for igual o do contexto, false caso contrário
+     */
+    protected function comparaValores($valoresEsperados, $valorContexto)
+    {
+        if (!is_array($valoresEsperados)) {
+            $valoresEsperados = array($valoresEsperados);
+        }
+        foreach ($valoresEsperados as $valorEsperado) {
+            if ($valorEsperado == $valorContexto) {
+                $this->valorEsperado = $valorEsperado;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Valida se o campo não foi preenchido.
+     *
+     * @param      mixed  $valor  valor do campo sendo validado
+     *
+     * @return     bool   true se for válido, false se não for
+     */
+    protected function deveSerNull($valor)
+    {
+        if ($valor !== null) {
+            $this->preparaErro(self::DEVE_SER_NULL);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Valida se o valor foi preencido.
+     *
+     * @param      mixed  $valor  valor do campo sendo validado
+     *
+     * @return     bool   true se for válido, false se não for
+     */
+    protected function ehObrigatorio($valor)
+    {
+        if ($valor === null) {
+            $this->preparaErro(self::EH_OBRIGATORIO);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Aceita qualquer valor.
+     *
+     * @param      mixed  $valor  valor do campo sendo validado
+     *
+     * @return     true
+     */
+    protected function ehOpcional($valor)
+    {
+        return true;
+    }
+
+    /**
+     * Encontra a entidade do formulário de acordo com o id no contexto
+     *
+     * @param      string  $entidade  The entidade
+     * @param      array   $contexto  The contexto
+     *
+     * @return     mixed   A entidade encontrada ou null se não achar
+     */
+    protected function encontraEntidade($entidade, array $contexto)
+    {
+        $em         = $this->getEntityManager();
+        $repository = $this->getRepository($entidade);
+        $metadata   = $em->getClassMetadata($entidade);
+        $identifier = $metadata->getIdentifier();
+
+        $identifier = array_flip($identifier);
+
+        foreach ($identifier as $field => $value) {
+            if (!isset($contexto[$field])) {
+                return;
+            }
+            $identifier[$field] = $contexto[$field];
+        }
+
+        if ($identifier) {
+            return $repository->find($identifier);
+        }
+
+        return;
     }
 
     /**
@@ -112,20 +229,6 @@ class Dependencia extends AbstractValidator implements ServiceLocatorAwareInterf
     }
 
     /**
-     * retorna o repositório de uma entidade
-     *
-     * @param      mixed                           $entity  The entity
-     *
-     * @return     Doctrine\ORM\EntityRespository  The repository.
-     */
-    protected function getRepository($entity)
-    {
-        $em = $this->getEntityManager();
-
-        return $em->getRepository($entity);
-    }
-
-    /**
      * Encontra a entidade de uma associação
      *
      * @param      string  $entidadeNome  The entidade nome
@@ -155,66 +258,60 @@ class Dependencia extends AbstractValidator implements ServiceLocatorAwareInterf
     }
 
     /**
-     * Decide se o valor é valido de acordo com a regra informada.
+     * Gets the entity manager.
      *
-     * @param      mixed   $valor     O valor do campo sendo validado
-     * @param      string  $regra     A regra para validar
-     * @param      array   $contexto  The contexto
-     * @param      bool  $negativa  true quando a regra é negativa
-     *
-     * @return     bool    true se for válido, false se não for
+     * @return     Doctrine\ORM\EntityManager  The entity manager.
      */
-    protected function aplicaRegra($valor, $regra, array $contexto)
+    protected function getEntityManager()
     {
-        return $this->{$regra}($valor, $contexto);
+        return $this->getServiceLocator()->getServiceLocator()->get('Doctrine\ORM\EntityManager');
     }
 
     /**
-     * Valida se o valor foi preencido.
+     * retorna o repositório de uma entidade
      *
-     * @param      mixed  $valor  valor do campo sendo validado
+     * @param      mixed                           $entity  The entity
      *
-     * @return     bool   true se for válido, false se não for
+     * @return     Doctrine\ORM\EntityRespository  The repository.
      */
-    protected function ehObrigatorio($valor)
+    protected function getRepository($entity)
     {
-        if ($valor === null) {
-            $this->preparaErro(self::EH_OBRIGATORIO);
+        $em = $this->getEntityManager();
 
-            return false;
+        return $em->getRepository($entity);
+    }
+
+    /**
+     * Encontra o valor antigo de um campo
+     *
+     * @param      mixed   $entidade  O entidade
+     * @param      string  $campo     O campo
+     *
+     * @return     mixed   O valor antigo.
+     */
+    protected function getValorAntigo($entidade, $campo)
+    {
+        $em           = $this->getEntityManager();
+        $metadata     = $em->getClassMetadata(get_class($entidade));
+        $ehAssociacao = $metadata->hasAssociation($campo);
+
+        if ($ehAssociacao) {
+            return $entidade->{'get'.ucfirst($campo)}()->getId();
+        } else {
+            return $entidade->{'get'.ucfirst($campo)}();
         }
-
-        return true;
     }
 
     /**
-     * Valida se o campo não foi preenchido.
+     * Determines if it has option.
      *
-     * @param      mixed  $valor  valor do campo sendo validado
+     * @param      string  $option
      *
-     * @return     bool   true se for válido, false se não for
+     * @return     bool    True if has option, False otherwise.
      */
-    protected function deveSerNull($valor)
+    protected function hasOption($option)
     {
-        if ($valor !== null) {
-            $this->preparaErro(self::DEVE_SER_NULL);
-
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Aceita qualquer valor.
-     *
-     * @param      mixed  $valor  valor do campo sendo validado
-     *
-     * @return     true
-     */
-    protected function ehOpcional($valor)
-    {
-        return true;
+        return isset($this->getOptions()[$option]);
     }
 
     /**
@@ -247,92 +344,26 @@ class Dependencia extends AbstractValidator implements ServiceLocatorAwareInterf
      */
     protected function preparaErro($erro)
     {
-        if (is_bool($this->valorEsperado)) {
-            $this->valorEsperado = $this->valorEsperado ? 'true' : 'false';
+        if (!is_array($this->valorEsperado)) {
+            $this->valorEsperado = array($this->valorEsperado);
         }
 
-        if ($this->valorEsperado === null) {
-            $this->valorEsperado = 'null';
+        foreach ($this->valorEsperado as $key => $value) {
+            if (is_bool($value)) {
+                $this->valorEsperado[$key] = $this->valorEsperado ? 'true' : 'false';
+            }
+
+            if ($value === null) {
+                $this->valorEsperado[$key] = 'null';
+            }
         }
+
+        $this->valorEsperado = implode(' e de ', $this->valorEsperado);
 
         if ($this->hasOption('da_associacao')) {
             $this->campoContexo = $this->getOption('da_associacao').'.'.$this->campoContexo;
         }
 
         $this->error($erro);
-    }
-
-    /**
-     * Determines if it has option.
-     *
-     * @param      string  $option
-     *
-     * @return     bool    True if has option, False otherwise.
-     */
-    protected function hasOption($option)
-    {
-        return isset($this->getOptions()[$option]);
-    }
-
-    /**
-     * Encontra a entidade do formulário de acordo com o id no contexto
-     *
-     * @param      string  $entidade  The entidade
-     * @param      array   $contexto  The contexto
-     *
-     * @return     mixed   A entidade encontrada ou null se não achar
-     */
-    protected function encontraEntidade($entidade, array $contexto)
-    {
-        $em         = $this->getEntityManager();
-        $repository = $this->getRepository($entidade);
-        $metadata   = $em->getClassMetadata($entidade);
-        $identifier = $metadata->getIdentifier();
-
-        $identifier = array_flip($identifier);
-
-        foreach ($identifier as $field => $value) {
-            if (!isset($contexto[$field])) {
-                return;
-            }
-            $identifier[$field] = $contexto[$field];
-        }
-
-        if ($identifier) {
-            return $repository->find($identifier);
-        }
-
-        return;
-    }
-
-    /**
-     * Encontra o valor antigo de um campo
-     *
-     * @param      mixed   $entidade  O entidade
-     * @param      string  $campo     O campo
-     *
-     * @return     mixed   O valor antigo.
-     */
-    protected function getValorAntigo($entidade, $campo)
-    {
-        $em           = $this->getEntityManager();
-        $metadata     = $em->getClassMetadata(get_class($entidade));
-        $ehAssociacao = $metadata->hasAssociation($campo);
-
-        if ($ehAssociacao) {
-            return $entidade->{'get'.ucfirst($campo)}()->getId();
-        } else {
-            return $entidade->{'get'.ucfirst($campo)}();
-        }
-    }
-
-    /**
-     * Gets the entity manager.
-     *
-     * @return     Doctrine\ORM\EntityManager  The entity manager.
-     */
-    protected function getEntityManager()
-    {
-        return $this->getServiceLocator()->getServiceLocator()->get('Doctrine\ORM\EntityManager');
     }
 }

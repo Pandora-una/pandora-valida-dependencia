@@ -29,7 +29,7 @@ A forma recomendada de instalação é por [composer](https://getcomposer.org/):
 O validador dependência cria regras condicionais para os campos de um formulário. ele tem 4 parâmetros obrigatórios nos options:
 
 * **se_campo**: O campo que será checado para validar o campo atual
-* **tem_valor**: O valor que o campo checado deve ter para que alguma regra se aplique
+* **tem_valor**: O valor que o campo checado deve ter para que alguma regra se aplique, caso hajam dois valores diferentes para a aplicação da regra, este campo aceita um array
 * **este_campo**: A regra que será aplicada ao campo a ser validado caso o campo checado tenha o valor esperado
 * **entidade**: O nome da entidade do doctrine que está sendo validada
 
@@ -59,7 +59,36 @@ Um exemplo de uso seria:
     ));
 ```
 
-Neste caso o campo "filho" é obrigatório apenas se o campo "tem_filho" tiver *true* como valor
+Neste caso o campo "filho" é obrigatório apenas se o campo "tem_filho" tiver *true* como valor.
+
+Um exemplo para uma regra que se aplica a dois valores do mesmo campo seria:
+
+```php
+    $this->add(array(
+        'name' => 'status',
+        'required' => true,
+    ));
+    $this->add(array(
+        'name' => 'justificativa',
+        'required' => false,
+        'continue_if_empty' => true,
+        'filters' => array(),
+        'validators' => array(
+            array(
+                'name' => 'Dependencia',
+                'options' => array(
+                    'se_campo' => 'status',
+                    'tem_valor' => array('incluido', 'em_orcamento'),
+                    'este_campo' => Dependencia::EH_OBRIGATORIO,
+                    'entidade' => 'Application\Entity\Pessoa',
+                ),
+            ),
+        ),
+    ));
+```
+
+
+
 
 #### Regras
 
