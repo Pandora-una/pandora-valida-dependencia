@@ -107,7 +107,7 @@ O validador dependência aceita mais dois campos opcionais:
 * **da_associacao**: O campo da associação da entidade a ser validada que o campo a ser checado se encontra.
 * **caso_contrario**: A regra de validação caso o valor do campo checado seja diferente do esperado.
 
-Exemplo de uso de *da_associacao*
+Exemplo de uso de *da_associacao*:
 
 ```php
     $this->add(array(
