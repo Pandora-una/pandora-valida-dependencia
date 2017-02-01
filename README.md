@@ -132,6 +132,7 @@ O validador dependência aceita mais dois campos opcionais:
 
 * **da_associacao**: O campo da associação da entidade a ser validada que o campo a ser checado se encontra.
 * **caso_contrario**: A regra de validação caso o valor do campo checado seja diferente do esperado.
+* **se_campos_tem_valores**: Recebe uma lista de campos e valores dos quais todos deverão ser satisfeitos no contexto para a regra se aplicar. Caso este campo seja preenchido os campos *se\_campo* e *tem\_valor* deixam de ser obrigatórios
 
 Exemplo de uso de *da_associacao*:
 
@@ -151,6 +152,33 @@ Exemplo de uso de *da_associacao*:
                 'options' => array(
                     'se_campo' => 'precisa_documento',
                     'da_associacao' => 'evento',
+                    'tem_valor' => 'true',
+                    'este_campo' => Dependencia::EH_OBRIGATORIO,
+                    'entidade' => 'Application\Entity\Convidado',
+                ),
+            ),
+        ),
+    ));
+```
+
+No caso do campo *da_associação*, também é possível declarar campos aninhados, como no exemplo a seguir:
+
+```php
+    $this->add(array(
+        'name' => 'formaPagamento',
+        'required' => true,
+    ));
+    $this->add(array(
+        'name' => 'numeroCheque',
+        'required' => false,
+        'continue_if_empty' => true,
+        'filters' => array(),
+        'validators' => array(
+            array(
+                'name' => 'Dependencia',
+                'options' => array(
+                    'se_campo' => 'exigeCheque',
+                    'da_associacao' => 'formaPagamento.tipoPagamento',
                     'tem_valor' => 'true',
                     'este_campo' => Dependencia::EH_OBRIGATORIO,
                     'entidade' => 'Application\Entity\Convidado',
@@ -187,15 +215,19 @@ Exemplo de uso de *caso_contrario*
     ));
 ```
 
-No caso do campo *da_associação*, também é possível declarar campos aninhados, como no exemplo a seguir:
+Exemplo de uso de *se_campo_tem_valor*
 
 ```php
     $this->add(array(
-        'name' => 'formaPagamento',
+        'name' => 'status',
         'required' => true,
     ));
     $this->add(array(
-        'name' => 'numeroCheque',
+        'name' => 'precisa_cotacao',
+        'required' => true,
+    ));
+    $this->add(array(
+        'name' => 'valor',
         'required' => false,
         'continue_if_empty' => true,
         'filters' => array(),
@@ -203,11 +235,13 @@ No caso do campo *da_associação*, também é possível declarar campos aninhad
             array(
                 'name' => 'Dependencia',
                 'options' => array(
-                    'se_campo' => 'exigeCheque',
-                    'da_associacao' => 'formaPagamento.tipoPagamento',
-                    'tem_valor' => 'true',
-                    'este_campo' => Dependencia::EH_OBRIGATORIO,
-                    'entidade' => 'Application\Entity\Convidado',
+                    'se_campos_tem_valores' => array(
+                        'precisa_cotacao' => true,
+                        'status' => 'incluido',
+                    ),
+                    'este_campo' => Dependencia::DEVE_SER_NULL,
+                    'caso_contrario' => Dependencia::EH_OBRIGATORIO,
+                    'entidade' => 'Application\Entity\ContPaga',
                 ),
             ),
         ),
