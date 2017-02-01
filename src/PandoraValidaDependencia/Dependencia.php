@@ -31,26 +31,28 @@ class Dependencia extends AbstractValidator implements ServiceLocatorAwareInterf
     public $campoContexo;
     public $valorEsperado;
     public $resultadoComparacao;
+    public $comparacao;
 
     /**
      * Determines if valid.
      *
-     * @param      <type>   $valor     The valor
-     * @param      <type>   $contexto  The contexto
-     * @param      $valor     O       valor a ser validado
-     * @param      $contexto  O       contexo do formulário
+     * @param      mixed    $valor     O valor a ser validado
+     * @param      array    $contexto  O contexo do formulário
      *
      * @return     boolean  True if valid, False otherwise.
      */
     public function isValid($valor, $contexto = null)
     {
-        $this->campoContexo  = $this->getOption('se_campo');
-        $this->valorEsperado = $this->getOption('tem_valor');
-        $regra               = $this->getOption('este_campo');
+        $this->montaComparacao();
+        $regra = $this->getOption('este_campo');
 
-        $valorContexto = $this->extraiValor($this->campoContexo, $contexto);
-        if ($this->comparaValores($this->valorEsperado, $valorContexto)) {
-            $this->resultadoComparacao = 'é igual a';
+        $valoresContexto = $this->extraiValores($contexto);
+        if ($this->comparaValores($valoresContexto)) {
+            if (count($this->comparacao) > 1) {
+                $this->resultadoComparacao = 'são iguais a';
+            } else {
+                $this->resultadoComparacao = 'é igual a';
+            }
 
             return $this->aplicaRegra($valor, $regra, $contexto);
         } elseif ($this->hasOption('caso_contrario')) {
@@ -87,18 +89,24 @@ class Dependencia extends AbstractValidator implements ServiceLocatorAwareInterf
      *
      * @return     boolean      true se algum dos valores esperados for igual o do contexto, false caso contrário
      */
-    protected function comparaValores($valoresEsperados, $valorContexto)
+    protected function comparaValores(array $valoresContexto)
     {
-        if (!is_array($valoresEsperados)) {
-            $valoresEsperados = array($valoresEsperados);
-        }
-        foreach ($valoresEsperados as $valorEsperado) {
-            if ($valorEsperado == $valorContexto) {
-                $this->valorEsperado = $valorEsperado;
-                return true;
+        foreach ($this->comparacao as $campo => $valores) {
+            $comparacao = false;
+            foreach ($valores as $valor) {
+                if ($valor == $valoresContexto[$campo]) {
+                    $this->comparacao[$campo] = array($valor);
+                    $comparacao               = true;
+                    break;
+                }
+            }
+            if (!$comparacao) {
+                $this->comparacao         = array();
+                $this->comparacao[$campo] = $valores;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     /**
@@ -183,15 +191,18 @@ class Dependencia extends AbstractValidator implements ServiceLocatorAwareInterf
     /**
      * Descobre o valor do contexto que será usado para aplicar a regra.
      *
-     * @param      string  $campoContexo  O campo que contém o valor
-     * @param      array   $contexto      Os valores enviados para o formulário
+     * @param      string       $campoContexo  O campo que contém o valor
+     * @param      array        $contexto      Os valores enviados para o
+     *                                         formulário
+     * @param      string|null  $associacao    A associação que o valor deve ser
+     *                                         buscado
      *
-     * @return     mixed   o valor do campo no contexto
+     * @return     mixed        o valor do campo no contexto
      */
-    protected function extraiValor($campoContexo, array $contexto)
+    protected function extraiValor($campoContexo, array $contexto, $associacao = null)
     {
-        if ($this->hasOption('da_associacao')) {
-            $associacoes = explode('.', $this->getOption('da_associacao'));
+        if ($associacao) {
+            $associacoes = explode('.', $associacao);
             $entidade    = $this->getOption('entidade');
 
             if (array_key_exists($associacoes[0], $contexto)) {
@@ -226,6 +237,30 @@ class Dependencia extends AbstractValidator implements ServiceLocatorAwareInterf
         }
 
         return $contexto[$campoContexo];
+    }
+
+    /**
+     * Extrai todos os valoes do contexto necessários para a comparacção
+     *
+     * @param      array  $contexto  The contexto
+     *
+     * @return     array  Os valores extraidos
+     */
+    protected function extraiValores(array $contexto)
+    {
+        $valores = array();
+        foreach ($this->comparacao as $chave => $valor) {
+            $associacao = null;
+            if (strpos($chave, '.') !== false) {
+                $associacao = explode('.', $chave);
+                $campo      = array_pop($associacao);
+                $associacao = implode('.', $associacao);
+            } else {
+                $campo = $chave;
+            }
+            $valores[$chave] = $this->extraiValor($campo, $contexto, $associacao);
+        }
+        return $valores;
     }
 
     /**
@@ -311,7 +346,33 @@ class Dependencia extends AbstractValidator implements ServiceLocatorAwareInterf
      */
     protected function hasOption($option)
     {
-        return isset($this->getOptions()[$option]);
+        return array_key_exists($option, $this->getOptions());
+    }
+
+    /**
+     * Monta a estrutura para a comparação
+     *
+     * @throws     \Exception  Lança erro se a option não informar as comparações
+     */
+    protected function montaComparacao()
+    {
+        if ($this->hasOption('se_campos_tem_valores')) {
+            $this->comparacao = $this->getOption('se_campos_tem_valores');
+        } elseif ($this->hasOption('se_campo') && $this->hasOption('tem_valor')) {
+            $this->comparacao = array();
+            $campo            = $this->getOption('se_campo');
+            if ($this->hasOption('da_associacao')) {
+                $campo = $this->getOption('da_associacao') . '.' . $campo;
+            }
+            $this->comparacao[$campo] = $this->getOption('tem_valor');
+        } else {
+            throw new \Exception("É necessário informar os campos 'se_valor, 'tem_valor. Ou então o campo 'se_campos_tem_valores'", 500);
+        }
+        foreach ($this->comparacao as $campo => $valor) {
+            if (!is_array($valor)) {
+                $this->comparacao[$campo] = array($valor);
+            }
+        }
     }
 
     /**
@@ -344,26 +405,41 @@ class Dependencia extends AbstractValidator implements ServiceLocatorAwareInterf
      */
     protected function preparaErro($erro)
     {
-        if (!is_array($this->valorEsperado)) {
-            $this->valorEsperado = array($this->valorEsperado);
-        }
+        if (count($this->comparacao) > 1) {
+            $chaves  = array_keys($this->comparacao);
+            $valores = array_values($this->comparacao);
 
-        foreach ($this->valorEsperado as $key => $value) {
-            if (is_bool($value)) {
-                $this->valorEsperado[$key] = $this->valorEsperado ? 'true' : 'false';
-            }
-
-            if ($value === null) {
-                $this->valorEsperado[$key] = 'null';
-            }
-        }
-
-        $this->valorEsperado = implode(' e de ', $this->valorEsperado);
-
-        if ($this->hasOption('da_associacao')) {
-            $this->campoContexo = $this->getOption('da_associacao').'.'.$this->campoContexo;
+            $this->campoContexo  = $this->stringfy($chaves);
+            $this->valorEsperado = $this->stringfy($valores);
+            $this->valorEsperado .= ' respectivamente';
+        } else {
+            $this->campoContexo  = $this->stringfy(array_keys($this->comparacao));
+            $this->valorEsperado = $this->stringfy(array_values($this->comparacao), ' e de ');
         }
 
         $this->error($erro);
+    }
+
+    /**
+     * Transforma um array em uma string
+     *
+     * @param      array   $dados         o array a ser transformado
+     * @param      string  $ligacaoFinal  a ultima string para ligar os valores
+     *
+     * @return     string  uma versão do array em string
+     */
+    protected function stringfy(array $dados, $ligacaoFinal = ' e ')
+    {
+        $dados = array_map(function ($value) use ($ligacaoFinal) {
+            if (is_array($value)) {
+                return $this->stringfy($value, $ligacaoFinal);
+            }
+            return var_export($value, true);
+        }, $dados);
+        $ultimoDado = array_pop($dados);
+        if (count($dados) > 0) {
+            return implode(',', $dados) . $ligacaoFinal . $ultimoDado;
+        }
+        return $ultimoDado;
     }
 }
