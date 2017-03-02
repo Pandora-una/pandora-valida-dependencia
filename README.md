@@ -8,7 +8,7 @@ A forma recomendada de instalação é por [composer](https://getcomposer.org/):
 ```
     {
         "require": {
-            "pandora-una/pandora-valida-dependencia": "1.2.*"
+            "pandora-una/pandora-valida-dependencia": "1.3.*"
         }
     }
 ```
