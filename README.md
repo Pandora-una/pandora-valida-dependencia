@@ -247,3 +247,52 @@ Exemplo de uso de *se_campo_tem_valor*
         ),
     ));
 ```
+### Classes Auxiliares
+
+
+#### IfNotNull
+
+Para auxiliar a validar campos com obrigatoriedade condicional essa biblioteca disponibiliza um validador genérico que aplica uma validação específica apenas se o campo não for vazio
+
+**opções:**
+
+* *validator*: O validador a ser aplicado se o campo não for null
+* *override_message* (opcional): A mensagem de erro quando o validador falhar
+* *override_messages* (opcional): Lista que sobrescreve as mensagens de erro do validador
+
+**exemplo de uso:**
+
+```php
+    $this->add(array(
+        'name'              => 'novoEmail',
+        'required'          => false,
+        'continue_if_empty' => true,
+        'filters' => array(
+            array(
+                'name' => 'StripTags',
+            ),
+            array(
+                'name' => 'StringTrim',
+            ),
+        ),
+        'validators' => array(
+            array(
+                'name'    => 'IfNotNull',
+                'options' => array(
+                    'validator'        => 'EmailAddress',
+                    'override_messages' => array(
+                        EmailAddress::LENGTH_EXCEEDED => "O email é longo demais",
+                    ),
+                ),
+            ),
+            array(
+                'name'    => 'Dependencia',
+                'options' => array(
+                    'se_campo'   => 'email',
+                    'tem_valor'  => PessoaFisicaRepository::EMAIL_NOVO,
+                    'este_campo' => Dependencia::EH_OBRIGATORIO,
+                ),
+            ),
+        ),
+    ));
+```
