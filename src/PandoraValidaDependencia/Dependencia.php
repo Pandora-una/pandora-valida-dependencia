@@ -227,7 +227,7 @@ class Dependencia extends AbstractValidator implements ServiceLocatorAwareInterf
             return $entityAssociacao->{'get'.ucfirst($campoContexo)}();
         }
 
-        if (!isset($contexto[$campoContexo])) {
+        if ($this->hasOption('entidade') && !isset($contexto[$campoContexo])) {
             $entidade = $this->getOption('entidade');
             $antigo   = $this->encontraEntidade($entidade, $contexto);
             if (!$antigo) {
