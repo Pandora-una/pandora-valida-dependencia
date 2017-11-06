@@ -205,7 +205,9 @@ class Dependencia extends AbstractValidator implements ServiceLocatorAwareInterf
             $associacoes = explode('.', $associacao);
             $entidade    = $this->getOption('entidade');
 
-            if (array_key_exists($associacoes[0], $contexto)) {
+            if ($this->hasOption('do_callback')) {
+                $entityAssociacao = $this->getAssociacao($entidade, $associacoes, $contexto);
+            } elseif (array_key_exists($associacoes[0], $contexto)) {
                 if ($contexto[$associacoes[0]] === null) {
                     return;
                 }
@@ -275,12 +277,19 @@ class Dependencia extends AbstractValidator implements ServiceLocatorAwareInterf
     protected function getAssociacao($entidadeNome, array $associacoes, array $contexto)
     {
         $em = $this->getEntityManager();
+        $associacao = array_shift($associacoes);
 
-        $associacao         = array_shift($associacoes);
-        $metadata           = $em->getClassMetadata($entidadeNome);
-        $entidadeAssociacao = $metadata->getAssociationMapping($associacao)['targetEntity'];
-        $entidade           = $this->encontraEntidade($entidadeAssociacao, $contexto[$associacao]);
-
+        if ($this->hasOption('do_callback')) {
+            $callbackOptions = $this->getOption('do_callback');
+            if (!isset($callbackOptions['callback']) || !is_callable($callbackOptions['callback'])) {
+                throw new \Exception("Opção do_callback -> callback não informada ou inválida", 500);
+            }
+            $entidade = call_user_func($callbackOptions['callback']);
+        } else {
+            $metadata           = $em->getClassMetadata($entidadeNome);
+            $entidadeAssociacao = $metadata->getAssociationMapping($associacao)['targetEntity'];
+            $entidade           = $this->encontraEntidade($entidadeAssociacao, $contexto[$associacao]);
+        }
 
         foreach ($associacoes as $assoc) {
             if (!$entidade) {
@@ -363,6 +372,14 @@ class Dependencia extends AbstractValidator implements ServiceLocatorAwareInterf
             $campo            = $this->getOption('se_campo');
             if ($this->hasOption('da_associacao')) {
                 $campo = $this->getOption('da_associacao') . '.' . $campo;
+            }
+            if ($this->hasOption('do_callback')) {
+                $callback = $this->getOption('do_callback');
+                if (isset($callback['campo'])) {
+                    $campo = $callback['campo'] . '.' . $campo;
+                } else {
+                    $campo = 'callback' . '.' . $campo;
+                }
             }
             $this->comparacao[$campo] = $this->getOption('tem_valor');
         } else {
