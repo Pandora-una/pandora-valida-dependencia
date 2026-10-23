@@ -37,9 +37,10 @@ Framework 2 continua na 1.x. O comportamento é o da 1.3.2, fixado pelos testes
   chamar `setEntityManager()`/`setValidatorManager()`;
 - a comparação de `tem_valor` e do `naoEhEditavel` reproduz o `==` do PHP 7, que o PHP 8 mudou
   (`0 == ""`, `1 == "1abc"`, `"1" == "1 "`);
-- **diferença aceita:** pelo `IfNotNull`, validadores como `InArray` e `Date` ficam sem o template
-  do erro (o `IfNotNull` repassa a eles o `messageTemplates` vazio dele). Na 1.x a mensagem saía
-  `null` (`{"notInArray": null}`); na 3.x o campo fica inválido sem mensagem (`[]`).
+- pelo `IfNotNull`, validadores como `InArray`, `Date` e `Digits` ficam sem o template do erro (o
+  `IfNotNull` repassa a eles o `messageTemplates` vazio dele). Na 1.x a mensagem saía com a chave e
+  valor `null` (`{"notDigits": null}`); a 3.x reproduz isso (o laminas-validator sozinho tiraria a
+  chave, e há cenário no area-restrita que a confere).
 
 Testes: `make test` (PHP 8.4).
 

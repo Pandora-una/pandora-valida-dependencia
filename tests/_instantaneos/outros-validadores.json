@@ -34,11 +34,29 @@
                 }
             }
         ],
-        "NULL": [
+        "12": [
             true,
             []
         ],
-        "12": [
+        "NULL": [
+            true,
+            []
+        ]
+    },
+    "Digits com message": {
+        "'123'": [
+            true,
+            []
+        ],
+        "'qwe'": [
+            false,
+            {
+                "campo": {
+                    "notDigits": null
+                }
+            }
+        ],
+        "NULL": [
             true,
             []
         ]
@@ -75,6 +93,16 @@
             {
                 "campo": {
                     "notInArray": null
+                }
+            }
+        ]
+    },
+    "StringLength com message": {
+        "'abcd'": [
+            false,
+            {
+                "campo": {
+                    "stringLengthTooLong": "The input is more than 3 characters long"
                 }
             }
         ]
