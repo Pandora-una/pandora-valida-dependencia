@@ -25,7 +25,7 @@ make test
 
 # 1.x: vendor e imagem do area-restrita (PHPUnit 5.7 de lá), num checkout com o código 1.x
 # (o commit da caracterização)
-git worktree add /tmp/valida-1x <commit da caracterização>
+git worktree add /tmp/valida-1x 79bc291
 /tmp/valida-1x/ci/teste-1x.sh [<caminho do srv do area-restrita>]
 
 # regravar os instantâneos (só na 1.x, e só de propósito)
