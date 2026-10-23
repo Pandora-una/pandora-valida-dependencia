@@ -1,0 +1,46 @@
+{
+    "pessoa 1 (F), novo ''": [
+        false,
+        {
+            "sexo": {
+                "naoEhEditavel": "Este campo não deve ser alterado quando 'id' é igual a 1"
+            }
+        }
+    ],
+    "pessoa 1 (F), novo 'F'": [
+        true,
+        []
+    ],
+    "pessoa 1 (F), novo 'M'": [
+        false,
+        {
+            "sexo": {
+                "naoEhEditavel": "Este campo não deve ser alterado quando 'id' é igual a 1"
+            }
+        }
+    ],
+    "pessoa 1 (F), novo 'f'": [
+        false,
+        {
+            "sexo": {
+                "naoEhEditavel": "Este campo não deve ser alterado quando 'id' é igual a 1"
+            }
+        }
+    ],
+    "pessoa 1 (F), novo 0": [
+        true,
+        []
+    ],
+    "pessoa 1 (F), novo NULL": [
+        false,
+        {
+            "sexo": {
+                "naoEhEditavel": "Este campo não deve ser alterado quando 'id' é igual a 1"
+            }
+        }
+    ],
+    "pessoa 1 (F), novo true": [
+        true,
+        []
+    ]
+}

@@ -1,0 +1,574 @@
+{
+    "tem_valor \"\"": {
+        "meio = ' 1'": [
+            true,
+            []
+        ],
+        "meio = ''": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a ''"
+                }
+            }
+        ],
+        "meio = '0'": [
+            true,
+            []
+        ],
+        "meio = '1 '": [
+            true,
+            []
+        ],
+        "meio = '1'": [
+            true,
+            []
+        ],
+        "meio = '1.0'": [
+            true,
+            []
+        ],
+        "meio = '1abc'": [
+            true,
+            []
+        ],
+        "meio = 'abc'": [
+            true,
+            []
+        ],
+        "meio = 0": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a ''"
+                }
+            }
+        ],
+        "meio = 1": [
+            true,
+            []
+        ],
+        "meio = NULL": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a ''"
+                }
+            }
+        ],
+        "meio = false": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a ''"
+                }
+            }
+        ],
+        "meio = true": [
+            true,
+            []
+        ]
+    },
+    "tem_valor \"1\"": {
+        "meio = ' 1'": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a '1'"
+                }
+            }
+        ],
+        "meio = ''": [
+            true,
+            []
+        ],
+        "meio = '0'": [
+            true,
+            []
+        ],
+        "meio = '1 '": [
+            true,
+            []
+        ],
+        "meio = '1'": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a '1'"
+                }
+            }
+        ],
+        "meio = '1.0'": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a '1'"
+                }
+            }
+        ],
+        "meio = '1abc'": [
+            true,
+            []
+        ],
+        "meio = 'abc'": [
+            true,
+            []
+        ],
+        "meio = 0": [
+            true,
+            []
+        ],
+        "meio = 1": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a '1'"
+                }
+            }
+        ],
+        "meio = NULL": [
+            true,
+            []
+        ],
+        "meio = false": [
+            true,
+            []
+        ],
+        "meio = true": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a '1'"
+                }
+            }
+        ]
+    },
+    "tem_valor \"S\"": {
+        "meio = ' 1'": [
+            true,
+            []
+        ],
+        "meio = ''": [
+            true,
+            []
+        ],
+        "meio = '0'": [
+            true,
+            []
+        ],
+        "meio = '1 '": [
+            true,
+            []
+        ],
+        "meio = '1'": [
+            true,
+            []
+        ],
+        "meio = '1.0'": [
+            true,
+            []
+        ],
+        "meio = '1abc'": [
+            true,
+            []
+        ],
+        "meio = 'abc'": [
+            true,
+            []
+        ],
+        "meio = 0": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a 'S'"
+                }
+            }
+        ],
+        "meio = 1": [
+            true,
+            []
+        ],
+        "meio = NULL": [
+            true,
+            []
+        ],
+        "meio = false": [
+            true,
+            []
+        ],
+        "meio = true": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a 'S'"
+                }
+            }
+        ]
+    },
+    "tem_valor \"abc\"": {
+        "meio = ' 1'": [
+            true,
+            []
+        ],
+        "meio = ''": [
+            true,
+            []
+        ],
+        "meio = '0'": [
+            true,
+            []
+        ],
+        "meio = '1 '": [
+            true,
+            []
+        ],
+        "meio = '1'": [
+            true,
+            []
+        ],
+        "meio = '1.0'": [
+            true,
+            []
+        ],
+        "meio = '1abc'": [
+            true,
+            []
+        ],
+        "meio = 'abc'": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a 'abc'"
+                }
+            }
+        ],
+        "meio = 0": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a 'abc'"
+                }
+            }
+        ],
+        "meio = 1": [
+            true,
+            []
+        ],
+        "meio = NULL": [
+            true,
+            []
+        ],
+        "meio = false": [
+            true,
+            []
+        ],
+        "meio = true": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a 'abc'"
+                }
+            }
+        ]
+    },
+    "tem_valor 0": {
+        "meio = ' 1'": [
+            true,
+            []
+        ],
+        "meio = ''": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a 0"
+                }
+            }
+        ],
+        "meio = '0'": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a 0"
+                }
+            }
+        ],
+        "meio = '1 '": [
+            true,
+            []
+        ],
+        "meio = '1'": [
+            true,
+            []
+        ],
+        "meio = '1.0'": [
+            true,
+            []
+        ],
+        "meio = '1abc'": [
+            true,
+            []
+        ],
+        "meio = 'abc'": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a 0"
+                }
+            }
+        ],
+        "meio = 0": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a 0"
+                }
+            }
+        ],
+        "meio = 1": [
+            true,
+            []
+        ],
+        "meio = NULL": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a 0"
+                }
+            }
+        ],
+        "meio = false": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a 0"
+                }
+            }
+        ],
+        "meio = true": [
+            true,
+            []
+        ]
+    },
+    "tem_valor 1": {
+        "meio = ' 1'": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a 1"
+                }
+            }
+        ],
+        "meio = ''": [
+            true,
+            []
+        ],
+        "meio = '0'": [
+            true,
+            []
+        ],
+        "meio = '1 '": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a 1"
+                }
+            }
+        ],
+        "meio = '1'": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a 1"
+                }
+            }
+        ],
+        "meio = '1.0'": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a 1"
+                }
+            }
+        ],
+        "meio = '1abc'": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a 1"
+                }
+            }
+        ],
+        "meio = 'abc'": [
+            true,
+            []
+        ],
+        "meio = 0": [
+            true,
+            []
+        ],
+        "meio = 1": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a 1"
+                }
+            }
+        ],
+        "meio = NULL": [
+            true,
+            []
+        ],
+        "meio = false": [
+            true,
+            []
+        ],
+        "meio = true": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a 1"
+                }
+            }
+        ]
+    },
+    "tem_valor 4": {
+        "meio = ' 1'": [
+            true,
+            []
+        ],
+        "meio = ''": [
+            true,
+            []
+        ],
+        "meio = '0'": [
+            true,
+            []
+        ],
+        "meio = '1 '": [
+            true,
+            []
+        ],
+        "meio = '1'": [
+            true,
+            []
+        ],
+        "meio = '1.0'": [
+            true,
+            []
+        ],
+        "meio = '1abc'": [
+            true,
+            []
+        ],
+        "meio = 'abc'": [
+            true,
+            []
+        ],
+        "meio = 0": [
+            true,
+            []
+        ],
+        "meio = 1": [
+            true,
+            []
+        ],
+        "meio = NULL": [
+            true,
+            []
+        ],
+        "meio = false": [
+            true,
+            []
+        ],
+        "meio = true": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a 4"
+                }
+            }
+        ]
+    },
+    "tem_valor [1,4]": {
+        "meio = ' 1'": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a 1"
+                }
+            }
+        ],
+        "meio = ''": [
+            true,
+            []
+        ],
+        "meio = '0'": [
+            true,
+            []
+        ],
+        "meio = '1 '": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a 1"
+                }
+            }
+        ],
+        "meio = '1'": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a 1"
+                }
+            }
+        ],
+        "meio = '1.0'": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a 1"
+                }
+            }
+        ],
+        "meio = '1abc'": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a 1"
+                }
+            }
+        ],
+        "meio = 'abc'": [
+            true,
+            []
+        ],
+        "meio = 0": [
+            true,
+            []
+        ],
+        "meio = 1": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a 1"
+                }
+            }
+        ],
+        "meio = NULL": [
+            true,
+            []
+        ],
+        "meio = false": [
+            true,
+            []
+        ],
+        "meio = true": [
+            false,
+            {
+                "endereco": {
+                    "ehObrigatorio": "Este campo é obrigatório quando 'meio' é igual a 1"
+                }
+            }
+        ]
+    }
+}

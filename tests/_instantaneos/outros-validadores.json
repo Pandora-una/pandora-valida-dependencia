@@ -1,0 +1,82 @@
+{
+    "Date": {
+        "'2026-02-28'": [
+            true,
+            []
+        ],
+        "'2026-02-30'": [
+            false,
+            {
+                "campo": {
+                    "dateFalseFormat": null
+                }
+            }
+        ],
+        "'28/02/2026'": [
+            false,
+            {
+                "campo": {
+                    "dateInvalidDate": null
+                }
+            }
+        ]
+    },
+    "Digits": {
+        "'123'": [
+            true,
+            []
+        ],
+        "'12a'": [
+            false,
+            {
+                "campo": {
+                    "notDigits": null
+                }
+            }
+        ],
+        "NULL": [
+            true,
+            []
+        ],
+        "12": [
+            true,
+            []
+        ]
+    },
+    "EmailAddress": {
+        "'a@b.com'": [
+            true,
+            []
+        ],
+        "'x'": [
+            false,
+            {
+                "campo": {
+                    "emailAddressInvalidFormat": "O email não parece ser um email válido"
+                }
+            }
+        ]
+    },
+    "InArray": {
+        "'A'": [
+            true,
+            []
+        ],
+        "'C'": [
+            false,
+            {
+                "campo": {
+                    "notInArray": null
+                }
+            }
+        ],
+        "0": [
+            false,
+            {
+                "campo": {
+                    "notInArray": null
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,42 @@
+{
+    "\"\" com motivo": [
+        false,
+        {
+            "motivo": {
+                "deveSerNull": "Este campo não deve ser preenchido quando 'afastamento' é igual a NULL"
+            }
+        }
+    ],
+    "0 com motivo": [
+        false,
+        {
+            "motivo": {
+                "deveSerNull": "Este campo não deve ser preenchido quando 'afastamento' é igual a NULL"
+            }
+        }
+    ],
+    "data com motivo": [
+        true,
+        []
+    ],
+    "data sem motivo": [
+        false,
+        {
+            "motivo": {
+                "ehObrigatorio": "Este campo é obrigatório quando 'afastamento' é diferente de NULL"
+            }
+        }
+    ],
+    "null com motivo": [
+        false,
+        {
+            "motivo": {
+                "deveSerNull": "Este campo não deve ser preenchido quando 'afastamento' é igual a NULL"
+            }
+        }
+    ],
+    "null sem motivo": [
+        true,
+        []
+    ]
+}

@@ -1,0 +1,70 @@
+{
+    "\"\" sem filho": [
+        true,
+        []
+    ],
+    "\"0\" sem filho": [
+        true,
+        []
+    ],
+    "\"1\" sem filho": [
+        false,
+        {
+            "filho": {
+                "ehObrigatorio": "Este campo é obrigatório quando 'tem_filho' é igual a true"
+            }
+        }
+    ],
+    "\"S\" sem filho": [
+        false,
+        {
+            "filho": {
+                "ehObrigatorio": "Este campo é obrigatório quando 'tem_filho' é igual a true"
+            }
+        }
+    ],
+    "0 sem filho": [
+        true,
+        []
+    ],
+    "1 sem filho": [
+        false,
+        {
+            "filho": {
+                "ehObrigatorio": "Este campo é obrigatório quando 'tem_filho' é igual a true"
+            }
+        }
+    ],
+    "false sem filho": [
+        true,
+        []
+    ],
+    "null sem filho": [
+        true,
+        []
+    ],
+    "só o filho": [
+        true,
+        []
+    ],
+    "true com filho": [
+        true,
+        []
+    ],
+    "true e filho ausente": [
+        true,
+        []
+    ],
+    "true sem filho": [
+        false,
+        {
+            "filho": {
+                "ehObrigatorio": "Este campo é obrigatório quando 'tem_filho' é igual a true"
+            }
+        }
+    ],
+    "vazio": [
+        true,
+        []
+    ]
+}

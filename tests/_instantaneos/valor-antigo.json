@@ -1,0 +1,30 @@
+{
+    "pessoa 1 (situação 0) sem filho": [
+        true,
+        []
+    ],
+    "pessoa 1 mandando situação 5": [
+        false,
+        {
+            "filho": {
+                "ehObrigatorio": "Este campo é obrigatório quando 'situacao' é igual a 5"
+            }
+        }
+    ],
+    "pessoa 2 (situação 5) sem filho": [
+        false,
+        {
+            "filho": {
+                "ehObrigatorio": "Este campo é obrigatório quando 'situacao' é igual a 5"
+            }
+        }
+    ],
+    "pessoa inexistente": [
+        true,
+        []
+    ],
+    "sem id": [
+        true,
+        []
+    ]
+}

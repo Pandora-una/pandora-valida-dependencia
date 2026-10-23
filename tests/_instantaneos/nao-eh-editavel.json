@@ -1,0 +1,110 @@
+{
+    "pessoa 1 (situação 0), nova ''": [
+        true,
+        []
+    ],
+    "pessoa 1 (situação 0), nova '0'": [
+        true,
+        []
+    ],
+    "pessoa 1 (situação 0), nova '5'": [
+        false,
+        {
+            "situacao": {
+                "naoEhEditavel": "Este campo não deve ser alterado quando 'id' é igual a 1"
+            }
+        }
+    ],
+    "pessoa 1 (situação 0), nova '5abc'": [
+        false,
+        {
+            "situacao": {
+                "naoEhEditavel": "Este campo não deve ser alterado quando 'id' é igual a 1"
+            }
+        }
+    ],
+    "pessoa 1 (situação 0), nova 'abc'": [
+        true,
+        []
+    ],
+    "pessoa 1 (situação 0), nova 0": [
+        true,
+        []
+    ],
+    "pessoa 1 (situação 0), nova 5": [
+        false,
+        {
+            "situacao": {
+                "naoEhEditavel": "Este campo não deve ser alterado quando 'id' é igual a 1"
+            }
+        }
+    ],
+    "pessoa 1 (situação 0), nova NULL": [
+        true,
+        []
+    ],
+    "pessoa 1 (situação 0), nova false": [
+        true,
+        []
+    ],
+    "pessoa 2 (situação 5), nova ''": [
+        false,
+        {
+            "situacao": {
+                "naoEhEditavel": "Este campo não deve ser alterado quando 'id' é igual a 2"
+            }
+        }
+    ],
+    "pessoa 2 (situação 5), nova '0'": [
+        false,
+        {
+            "situacao": {
+                "naoEhEditavel": "Este campo não deve ser alterado quando 'id' é igual a 2"
+            }
+        }
+    ],
+    "pessoa 2 (situação 5), nova '5'": [
+        true,
+        []
+    ],
+    "pessoa 2 (situação 5), nova '5abc'": [
+        true,
+        []
+    ],
+    "pessoa 2 (situação 5), nova 'abc'": [
+        false,
+        {
+            "situacao": {
+                "naoEhEditavel": "Este campo não deve ser alterado quando 'id' é igual a 2"
+            }
+        }
+    ],
+    "pessoa 2 (situação 5), nova 0": [
+        false,
+        {
+            "situacao": {
+                "naoEhEditavel": "Este campo não deve ser alterado quando 'id' é igual a 2"
+            }
+        }
+    ],
+    "pessoa 2 (situação 5), nova 5": [
+        true,
+        []
+    ],
+    "pessoa 2 (situação 5), nova NULL": [
+        false,
+        {
+            "situacao": {
+                "naoEhEditavel": "Este campo não deve ser alterado quando 'id' é igual a 2"
+            }
+        }
+    ],
+    "pessoa 2 (situação 5), nova false": [
+        false,
+        {
+            "situacao": {
+                "naoEhEditavel": "Este campo não deve ser alterado quando 'id' é igual a 2"
+            }
+        }
+    ]
+}

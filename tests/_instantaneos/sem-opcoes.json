@@ -1,0 +1,5 @@
+[
+    "Exception",
+    500,
+    "É necessário informar os campos 'se_valor, 'tem_valor. Ou então o campo 'se_campos_tem_valores'"
+]

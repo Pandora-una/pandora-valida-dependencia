@@ -1,0 +1,56 @@
+{
+    "override_message": {
+        "'aaaaaaaaaaaaa'": [
+            false,
+            {
+                "campo": {
+                    "stringLengthTooLong": "A senha não pode ter mais de 12 caracteres e menos de 6 caracteres"
+                }
+            }
+        ],
+        "'abc'": [
+            false,
+            {
+                "campo": {
+                    "stringLengthTooShort": "A senha não pode ter mais de 12 caracteres e menos de 6 caracteres"
+                }
+            }
+        ],
+        "'abcdefg'": [
+            true,
+            []
+        ]
+    },
+    "override_messages": {
+        "'abcd'": [
+            false,
+            {
+                "campo": {
+                    "stringLengthTooLong": "Grande demais"
+                }
+            }
+        ]
+    },
+    "sem mensagem": {
+        "''": [
+            true,
+            []
+        ],
+        "'abc'": [
+            true,
+            []
+        ],
+        "'abcd'": [
+            false,
+            {
+                "campo": {
+                    "stringLengthTooLong": "The input is more than 3 characters long"
+                }
+            }
+        ],
+        "NULL": [
+            true,
+            []
+        ]
+    }
+}

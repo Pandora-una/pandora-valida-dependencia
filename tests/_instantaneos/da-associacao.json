@@ -1,0 +1,26 @@
+{
+    "banco 10 (tipo 4) no contexto": [
+        false,
+        {
+            "filho": {
+                "ehObrigatorio": "Este campo é obrigatório quando 'banco.tipo' é igual a 4"
+            }
+        }
+    ],
+    "banco 11 (tipo 0) no contexto": [
+        true,
+        []
+    ],
+    "banco inexistente": [
+        true,
+        []
+    ],
+    "banco null": [
+        true,
+        []
+    ],
+    "sem banco: o da pessoa 1": [
+        true,
+        []
+    ]
+}

@@ -1,0 +1,18 @@
+{
+    "banco 10": [
+        false,
+        {
+            "filho": {
+                "ehObrigatorio": "Este campo é obrigatório quando 'callback.codigo' é igual a '001'"
+            }
+        }
+    ],
+    "banco 11": [
+        true,
+        []
+    ],
+    "banco 99": [
+        true,
+        []
+    ]
+}

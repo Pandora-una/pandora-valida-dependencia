@@ -1,0 +1,22 @@
+{
+    "os dois": [
+        false,
+        {
+            "filho": {
+                "ehObrigatorio": "Este campo é obrigatório quando 'tipo' e 'ativo' são iguais a 2 e true respectivamente"
+            }
+        }
+    ],
+    "os dois, preenchido": [
+        true,
+        []
+    ],
+    "só ativo": [
+        true,
+        []
+    ],
+    "só tipo": [
+        true,
+        []
+    ]
+}

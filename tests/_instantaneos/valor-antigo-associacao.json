@@ -1,0 +1,10 @@
+{
+    "pessoa 1 (banco 10)": [
+        false,
+        {
+            "filho": {
+                "ehObrigatorio": "Este campo é obrigatório quando 'banco' é igual a 10"
+            }
+        }
+    ]
+}
