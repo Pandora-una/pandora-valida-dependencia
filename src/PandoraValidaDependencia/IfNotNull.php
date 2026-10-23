@@ -2,13 +2,21 @@
 
 namespace PandoraValidaDependencia;
 
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorAwareTrait;
-use Zend\Validator\AbstractValidator;
+use Laminas\Validator\AbstractValidator;
+use Laminas\Validator\ValidatorPluginManager;
 
-class IfNotNull extends AbstractValidator implements ServiceLocatorAwareInterface
+class IfNotNull extends AbstractValidator
 {
-    use ServiceLocatorAwareTrait;
+    /**
+     * @var ValidatorPluginManager
+     */
+    protected $validatorManager;
+
+    public function setValidatorManager(ValidatorPluginManager $validatorManager)
+    {
+        $this->validatorManager = $validatorManager;
+        return $this;
+    }
 
     /**
      * Determines if valid.
@@ -21,7 +29,7 @@ class IfNotNull extends AbstractValidator implements ServiceLocatorAwareInterfac
     public function isValid($valor, $contexto = null)
     {
         if ($valor !== null) {
-            $validator = $this->getServiceLocator()->get($this->getOption('validator'), $this->getOptions());
+            $validator = $this->validatorManager->get($this->getOption('validator'), $this->getOptions());
             if (array_key_exists('override_message', $this->getOptions())) {
                 $validator->setMessage($this->getOption('override_message'));
             }

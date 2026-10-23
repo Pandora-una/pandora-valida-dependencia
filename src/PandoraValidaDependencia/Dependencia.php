@@ -2,13 +2,15 @@
 
 namespace PandoraValidaDependencia;
 
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorAwareTrait;
-use Zend\Validator\AbstractValidator;
+use Doctrine\ORM\EntityManagerInterface;
+use Laminas\Validator\AbstractValidator;
 
-class Dependencia extends AbstractValidator implements ServiceLocatorAwareInterface
+class Dependencia extends AbstractValidator
 {
-    use ServiceLocatorAwareTrait;
+    /**
+     * @var EntityManagerInterface
+     */
+    protected $entityManager;
 
     //Regras
     const EH_OBRIGATORIO  = 'ehObrigatorio';
@@ -94,7 +96,7 @@ class Dependencia extends AbstractValidator implements ServiceLocatorAwareInterf
         foreach ($this->comparacao as $campo => $valores) {
             $comparacao = false;
             foreach ($valores as $valor) {
-                if ($valor == $valoresContexto[$campo]) {
+                if (self::igualNoPhp7($valor, $valoresContexto[$campo])) {
                     $this->comparacao[$campo] = array($valor);
                     $comparacao               = true;
                     break;
@@ -238,7 +240,8 @@ class Dependencia extends AbstractValidator implements ServiceLocatorAwareInterf
             return $this->getValorAntigo($antigo, $campoContexo);
         }
 
-        return $contexto[$campoContexo];
+        // campo ausente do contexto: null, como no PHP 7 (que só dava NOTICE)
+        return $contexto[$campoContexo] ?? null;
     }
 
     /**
@@ -308,7 +311,60 @@ class Dependencia extends AbstractValidator implements ServiceLocatorAwareInterf
      */
     protected function getEntityManager()
     {
-        return $this->getServiceLocator()->getServiceLocator()->get('Doctrine\ORM\EntityManager');
+        return $this->entityManager;
+    }
+
+    public function setEntityManager(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+        return $this;
+    }
+
+    /**
+     * A comparação solta (==) do PHP 7, que as regras dos sistemas foram escritas para usar.
+     *
+     * O PHP 8 mudou dois casos: número contra texto não numérico (no 7 o texto virava número, e
+     * 0 == "" e 1 == "1abc" eram verdadeiros; no 8 o número vira texto) e texto numérico com
+     * espaço no fim (no 7 "1 " não era numérico, e "1" == "1 " era falso; no 8 é verdadeiro).
+     * Fixado pelos instantâneos gravados no PHP 7.2 (tests/_instantaneos/comparacao-*.json).
+     *
+     * @param      mixed  $a
+     * @param      mixed  $b
+     *
+     * @return     bool
+     */
+    protected static function igualNoPhp7($a, $b)
+    {
+        $numero = function ($valor) {
+            return is_int($valor) || is_float($valor);
+        };
+        if (is_string($a) && $numero($b)) {
+            list($a, $b) = array($b, $a);
+        }
+        if ($numero($a) && is_string($b)) {
+            if (! self::numericoNoPhp7($b)) {
+                // o texto vira número pelo prefixo numérico ("1abc" é 1, "abc" e "" são 0)
+                return $a == (float) $b;
+            }
+            return $a == $b;
+        }
+        if (is_string($a) && is_string($b) && ! (self::numericoNoPhp7($a) && self::numericoNoPhp7($b))) {
+            return $a === $b;
+        }
+
+        return $a == $b;
+    }
+
+    /**
+     * is_numeric() do PHP 7: o do 8 aceita também espaço no fim.
+     *
+     * @param      string  $valor
+     *
+     * @return     bool
+     */
+    protected static function numericoNoPhp7($valor)
+    {
+        return is_numeric($valor) && rtrim($valor, " \t\n\r\v\f") === $valor;
     }
 
     /**
@@ -406,7 +462,7 @@ class Dependencia extends AbstractValidator implements ServiceLocatorAwareInterf
         $campo    = $this->getOption('campo');
         $antigo   = $this->encontraEntidade($entidade, $contexto);
 
-        if ($antigo && $this->getValorAntigo($antigo, $campo) != $valor) {
+        if ($antigo && ! self::igualNoPhp7($this->getValorAntigo($antigo, $campo), $valor)) {
             $this->preparaErro(self::NAO_EH_EDITAVEL);
 
             return false;

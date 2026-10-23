@@ -24,6 +24,25 @@ A forma recomendada de instalação é por [composer](https://getcomposer.org/):
     );
 ```
 
+### Versão 3: Laminas e PHP 8.4
+
+A 3.x é a versão para Laminas MVC e PHP 8.4 (migração AND-4055). Quem ainda está em Zend
+Framework 2 continua na 1.x. O comportamento é o da 1.3.2, fixado pelos testes
+(`tests/README.md`). O que muda para o sistema:
+
+- os validadores continuam registrados como `Dependencia` e `IfNotNull` (agora aliases das
+  classes, criadas por factory). O ServiceManager 3 diferencia maiúsculas: use essa grafia;
+- o `Dependencia` recebe o `EntityManager` pela factory, e o `IfNotNull` recebe o
+  `ValidatorManager`; nenhum dos dois é mais `ServiceLocatorAware`. Quem cria com `new` precisa
+  chamar `setEntityManager()`/`setValidatorManager()`;
+- a comparação de `tem_valor` e do `naoEhEditavel` reproduz o `==` do PHP 7, que o PHP 8 mudou
+  (`0 == ""`, `1 == "1abc"`, `"1" == "1 "`);
+- **diferença aceita:** pelo `IfNotNull`, validadores como `InArray` e `Date` ficam sem o template
+  do erro (o `IfNotNull` repassa a eles o `messageTemplates` vazio dele). Na 1.x a mensagem saía
+  `null` (`{"notInArray": null}`); na 3.x o campo fica inválido sem mensagem (`[]`).
+
+Testes: `make test` (PHP 8.4).
+
 ### Uso
 
 O validador dependência cria regras condicionais para os campos de um formulário. ele tem 4 parâmetros obrigatórios nos options:

@@ -11,7 +11,11 @@ use PHPUnit\Framework\TestCase as Assert;
  */
 class Instantaneo
 {
-    public static function confere($nome, $resposta)
+    /**
+     * @param callable|null $ajusteEsperado diferença aceita entre as pilhas, aplicada ao instantâneo
+     *                                     da 1.x antes de comparar (documentada no teste)
+     */
+    public static function confere($nome, $resposta, ?callable $ajusteEsperado = null)
     {
         $arquivo = __DIR__ . '/../_instantaneos/' . $nome . '.json';
         $atual = self::normaliza($resposta);
@@ -24,6 +28,10 @@ class Instantaneo
             return;
         }
         $esperado = json_decode(file_get_contents($arquivo), true);
+        if ($ajusteEsperado) {
+            $esperado = $ajusteEsperado($esperado);
+        }
+        $esperado = self::normaliza($esperado);
         Assert::assertSame(
             json_encode($esperado, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
             json_encode($atual, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
@@ -39,7 +47,8 @@ class Instantaneo
         $associativo = array_keys($valor) !== range(0, count($valor) - 1);
         $valor = array_map([self::class, 'normaliza'], $valor);
         if ($associativo) {
-            ksort($valor);
+            // como texto: a comparação de chave inteira com texto mudou no PHP 8
+            ksort($valor, SORT_STRING);
         }
         return $valor;
     }
